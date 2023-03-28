@@ -4,14 +4,14 @@ from flask_cors import CORS
 import json
 import time
 import Diffuse
+import GetPrompt
 
-Prompt = ""
 
 app = Flask(__name__)
 CORS(app)
 @app.route('/call', methods= ['GET', 'POST'])
 def call():
-    if request.method == 'POST':
+    if request.method == 'GET':
         get_type = request.args.get("type")
         if get_type == "Text" :
             
@@ -22,8 +22,9 @@ def call():
             return send_file('./image', mimetype='image/jpeg')
         
         elif get_type == "Diffusion":
-            Prompt = request.get_text()
-            Image = Diffuse.run(Prompt)
+            text = request.args.get("text")
+            prompt = GetPrompt.getPrompt(text)
+            Image = Diffuse.run(prompt)
             Image.save('./image')
             return send_file('./image', mimetype='image/jpeg')
     return 200  
