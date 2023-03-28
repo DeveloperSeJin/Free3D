@@ -5,6 +5,7 @@ import json
 import time
 import Diffuse
 import GetPrompt
+from PIL import Image
 
 
 app = Flask(__name__)
@@ -20,14 +21,19 @@ def call():
             Image = request.files['Image']
             Image.save('./image')
             return send_file('./image', mimetype='image/jpeg')
-        
         elif get_type == "Diffusion":
-            text = request.args.get("text")
-            prompt = GetPrompt.getPrompt(text)
-            Image = Diffuse.run(prompt)
-            Image.save('./image')
+            Prompt = request.args.get("text")
+            image = Diffuse.run(Prompt)
+            image.save('./image.jpg')
             return send_file('./image', mimetype='image/jpeg')
     return 200  
+        #elif get_type == "Diffusion":
+            #text = request.args.get("text")
+            #prompt = GetPrompt.getPrompt(text)
+            #Image = Diffuse.run(prompt)
+            #Image.save('./image.jpg')
+            #return send_file('./image', mimetype='image/jpeg')
+    #return 200  
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',debug=True)
