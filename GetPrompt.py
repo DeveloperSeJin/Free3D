@@ -1,6 +1,6 @@
 import openai
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 def getPrompt(discription) :
   response = openai.ChatCompletion.create(
