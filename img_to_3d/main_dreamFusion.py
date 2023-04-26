@@ -6,9 +6,10 @@ from nerf.provider import NeRFDataset
 from nerf.utils import *
 
 # torch.autograd.set_detect_anomaly(True)
-
-if __name__ == '__main__':
-
+def create_3d(image, workspace='workspace', dmtet=True, test=None, save_mesh=None):
+    """
+        1. argparse를 함수의 내부 인자로 수정하기
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument('--text', default=None, help="text prompt")
     parser.add_argument('--negative', default='', type=str, help="negative text prompt")
@@ -286,3 +287,6 @@ if __name__ == '__main__':
 
             if opt.save_mesh:
                 trainer.save_mesh()
+
+if __name__ == '__main__':
+    create_3d()
