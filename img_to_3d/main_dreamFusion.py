@@ -5,121 +5,161 @@ import sys
 from nerf.provider import NeRFDataset
 from nerf.utils import *
 
+class Option():
+    def __init__(
+        self,
+        image=None,
+        workspace='workspace',
+        dmtet=True,
+        test=None,
+        save_mesh=None,
+        eval_interval=1,
+        guidance='stable-diffusion',
+        seed=None,
+        known_view_interval=2,
+        guidance_scale=100.0,
+        mcubes_resolution=256,
+        decimate_target=5e4,
+        tet_grid_size=128,
+        init_ckpt='',
+        iters=10000,
+        lr=1e-3,
+        ckpt='latest',
+        max_steps=1024,
+        num_steps=64,
+        upsample_steps=32,
+        update_extra_interval=16,
+        max_ray_batch=4096,
+        warmup_iters=2000,
+        uniform_sphere_rate=0.0,
+        grad_clip=-1.0,
+        grad_clip_rgb=-1.0,
+        bg_radius=1.4,
+        density_activation='softplus',
+        density_thresh=0.1,
+        blob_density=10.0,
+        blob_radius=0.5,
+        backbone='grid',
+        optim='adan',
+        sd_version='2.1',
+        hf_key=None,
+        w=64,
+        h=64,
+        known_view_scale=1.5,
+        known_view_noise_scale=2e-3,
+        dmtet_reso_scale=8.0,
+        bound=1.0,
+        dt_gamma=0.0,
+        min_near=0.01,
+        radius_range=[1.0, 1.5],
+        theta_range=[45, 105],
+        phi_range=[-180, 180],
+        fovy_range=[40,80],
+        default_radius=1.2,
+        default_theta=90,
+        default_phi=0,
+        default_fovy=60,
+        angle_overhead=30.0,
+        angle_front=60.0,
+        t_range=[0.02, 0.98],
+        lambda_entropy=1e-3,
+        lambda_opacity=0.0,
+        lambda_orient=1e-2,
+        lambda_tv=0.0,
+        lambda_wd=0.0,
+        lambda_mesh_normal=0.5,
+        lambda_mesh_laplacian=0.5,
+        lambda_guidance=1.0,
+        lambda_rgb=10.0,
+        lambda_mask=5.0,
+        lambda_normal=0.0,
+        lambda_depth=0.1,
+        lambda_2d_normal_smooth=0.0,
+        O=None,
+        O2=None
+    ) -> None:
+        
+        self.image = image
+        self.workspace= workspace
+        self.dmtet=dmtet
+        self.test=test
+        self.save_mesh=save_mesh
+        self.eval_interval=eval_interval
+        self.guidance=guidance
+        self.seed=seed
+        self.known_view_interval=known_view_interval
+        self.guidance_scale=guidance_scale
+        self.mcubes_resolution=mcubes_resolution
+        self.decimate_target=decimate_target
+        self.tet_grid_size=tet_grid_size
+        self.init_ckpt=init_ckpt
+        self.iters=iters
+        self.lr=lr
+        self.ckpt=ckpt
+        self.max_steps=max_steps
+        self.num_steps=num_steps
+        self.upsample_steps=upsample_steps
+        self.update_extra_interval=update_extra_interval
+        self.max_ray_batch=max_ray_batch
+        self.warmup_iters=warmup_iters
+        self.uniform_sphere_rate=uniform_sphere_rate
+        self.grad_clip=grad_clip
+        self.grad_clip_rgb=grad_clip_rgb
+        self.bg_radius=bg_radius
+        self.density_activation=density_activation
+        self.density_thresh=density_thresh
+        self.blob_density=blob_density
+        self.blob_radius=blob_radius
+        self.backbone=backbone
+        self.optim=optim
+        self.sd_version=sd_version
+        self.hf_key=hf_key
+        self.w=w
+        self.h=h
+        self.known_view_scale=known_view_scale
+        self.known_view_noise_scale=known_view_noise_scale
+        self.dmtet_reso_scale=dmtet_reso_scale
+        self.bound=bound
+        self.dt_gamma=dt_gamma
+        self.min_near=min_near
+        self.radius_range=radius_range
+        self.theta_range=theta_range
+        self.phi_range=phi_range
+        self.fovy_range=fovy_range
+        self.default_radius=default_radius
+        self.default_theta=default_theta
+        self.default_phi=default_phi
+        self.default_fovy=default_fovy
+        self.angle_overhead=angle_overhead
+        self.angle_front=angle_front
+        self.t_range=t_range
+        self.lambda_entropy=lambda_entropy
+        self.lambda_opacity=lambda_opacity
+        self.lambda_orient=lambda_orient
+        self.lambda_tv=lambda_tv
+        self.lambda_wd=lambda_wd
+        self.lambda_mesh_normal=lambda_mesh_normal
+        self.lambda_mesh_laplacian=lambda_mesh_laplacian
+        self.lambda_guidance=lambda_guidance
+        self.lambda_rgb=lambda_rgb
+        self.lambda_mask=lambda_mask
+        self.lambda_normal=lambda_normal
+        self.lambda_depth=lambda_depth
+        self.lambda_2d_normal_smooth=lambda_2d_normal_smooth
+        self.O=O
+        self.O2=O2
+        
+                
+        
 # torch.autograd.set_detect_anomaly(True)
-def create_3d(image, workspace='workspace', dmtet=True, test=None, save_mesh=None):
-    """
-        1. argparse를 함수의 내부 인자로 수정하기
-    """
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--text', default=None, help="text prompt")
-    parser.add_argument('--negative', default='', type=str, help="negative text prompt")
-    parser.add_argument('-O', action='store_true', help="equals --fp16 --cuda_ray")
-    parser.add_argument('-O2', action='store_true', help="equals --backbone vanilla")
-    parser.add_argument('--test', action='store_true', help="test mode")
-    parser.add_argument('--eval_interval', type=int, default=1, help="evaluate on the valid set every interval epochs")
-    parser.add_argument('--workspace', type=str, default='workspace')
-    parser.add_argument('--guidance', type=str, default='stable-diffusion', help='guidance model')
-    parser.add_argument('--seed', default=None)
-
-    parser.add_argument('--image', default=None, help="image prompt")
-    parser.add_argument('--known_view_interval', type=int, default=2, help="train default view with RGB loss every & iters, only valid if --image is not None.")
-    parser.add_argument('--guidance_scale', type=float, default=100, help="diffusion model classifier-free guidance scale")
-
-    parser.add_argument('--save_mesh', action='store_true', help="export an obj mesh with texture")
-    parser.add_argument('--mcubes_resolution', type=int, default=256, help="mcubes resolution for extracting mesh")
-    parser.add_argument('--decimate_target', type=int, default=5e4, help="target face number for mesh decimation")
-
-    parser.add_argument('--dmtet', action='store_true', help="use dmtet finetuning")
-    parser.add_argument('--tet_grid_size', type=int, default=128, help="tet grid size")
-    parser.add_argument('--init_ckpt', type=str, default='', help="ckpt to init dmtet")
-
-    ### training options
-    parser.add_argument('--iters', type=int, default=10000, help="training iters")
-    parser.add_argument('--lr', type=float, default=1e-3, help="max learning rate")
-    parser.add_argument('--ckpt', type=str, default='latest')
-    parser.add_argument('--cuda_ray', action='store_true', help="use CUDA raymarching instead of pytorch")
-    parser.add_argument('--taichi_ray', action='store_true', help="use taichi raymarching")
-    parser.add_argument('--max_steps', type=int, default=1024, help="max num steps sampled per ray (only valid when using --cuda_ray)")
-    parser.add_argument('--num_steps', type=int, default=64, help="num steps sampled per ray (only valid when not using --cuda_ray)")
-    parser.add_argument('--upsample_steps', type=int, default=32, help="num steps up-sampled per ray (only valid when not using --cuda_ray)")
-    parser.add_argument('--update_extra_interval', type=int, default=16, help="iter interval to update extra status (only valid when using --cuda_ray)")
-    parser.add_argument('--max_ray_batch', type=int, default=4096, help="batch size of rays at inference to avoid OOM (only valid when not using --cuda_ray)")
-    parser.add_argument('--warmup_iters', type=int, default=2000, help="training iters that only use albedo shading")
-    parser.add_argument('--jitter_pose', action='store_true', help="add jitters to the randomly sampled camera poses")
-    parser.add_argument('--uniform_sphere_rate', type=float, default=0, help="likelihood of sampling camera location uniformly on the sphere surface area")
-    parser.add_argument('--grad_clip', type=float, default=-1, help="clip grad of all grad to this limit, negative value disables it")
-    parser.add_argument('--grad_clip_rgb', type=float, default=-1, help="clip grad of rgb space grad to this limit, negative value disables it")
-    # model options
-    parser.add_argument('--bg_radius', type=float, default=1.4, help="if positive, use a background model at sphere(bg_radius)")
-    parser.add_argument('--density_activation', type=str, default='softplus', choices=['softplus', 'exp'], help="density activation function")
-    parser.add_argument('--density_thresh', type=float, default=0.1, help="threshold for density grid to be occupied")
-    parser.add_argument('--blob_density', type=float, default=10, help="max (center) density for the density blob")
-    parser.add_argument('--blob_radius', type=float, default=0.5, help="control the radius for the density blob")
-    # network backbone
-    parser.add_argument('--backbone', type=str, default='grid', choices=['grid_tcnn', 'grid', 'vanilla', 'grid_taichi'], help="nerf backbone")
-    parser.add_argument('--optim', type=str, default='adan', choices=['adan', 'adam'], help="optimizer")
-    parser.add_argument('--sd_version', type=str, default='2.1', choices=['1.5', '2.0', '2.1'], help="stable diffusion version")
-    parser.add_argument('--hf_key', type=str, default=None, help="hugging face Stable diffusion model key")
-    # try this if CUDA OOM
-    parser.add_argument('--fp16', action='store_true', help="use float16 for training")
-    parser.add_argument('--vram_O', action='store_true', help="optimization for low VRAM usage")
-    # rendering resolution in training, increase these for better quality / decrease these if CUDA OOM even if --vram_O enabled.
-    parser.add_argument('--w', type=int, default=64, help="render width for NeRF in training")
-    parser.add_argument('--h', type=int, default=64, help="render height for NeRF in training")
-    parser.add_argument('--known_view_scale', type=float, default=1.5, help="multiply --h/w by this for known view rendering")
-    parser.add_argument('--known_view_noise_scale', type=float, default=2e-3, help="random camera noise added to rays_o and rays_d")
-    parser.add_argument('--dmtet_reso_scale', type=float, default=8, help="multiply --h/w by this for dmtet finetuning")
-
-    ### dataset options
-    parser.add_argument('--bound', type=float, default=1, help="assume the scene is bounded in box(-bound, bound)")
-    parser.add_argument('--dt_gamma', type=float, default=0, help="dt_gamma (>=0) for adaptive ray marching. set to 0 to disable, >0 to accelerate rendering (but usually with worse quality)")
-    parser.add_argument('--min_near', type=float, default=0.01, help="minimum near distance for camera")
-
-    parser.add_argument('--radius_range', type=float, nargs='*', default=[1.0, 1.5], help="training camera radius range")
-    parser.add_argument('--theta_range', type=float, nargs='*', default=[45, 105], help="training camera fovy range")
-    parser.add_argument('--phi_range', type=float, nargs='*', default=[-180, 180], help="training camera fovy range")
-    parser.add_argument('--fovy_range', type=float, nargs='*', default=[40, 80], help="training camera fovy range")
-
-    parser.add_argument('--default_radius', type=float, default=1.2, help="radius for the default view")
-    parser.add_argument('--default_theta', type=float, default=90, help="radius for the default view")
-    parser.add_argument('--default_phi', type=float, default=0, help="radius for the default view")
-    parser.add_argument('--default_fovy', type=float, default=60, help="fovy for the default view")
-
-    parser.add_argument('--progressive_view', action='store_true', help="progressively expand view sampling range from default to full")
-    parser.add_argument('--progressive_level', action='store_true', help="progressively increase gridencoder's max_level")
-
-    parser.add_argument('--angle_overhead', type=float, default=30, help="[0, angle_overhead] is the overhead region")
-    parser.add_argument('--angle_front', type=float, default=60, help="[0, angle_front] is the front region, [180, 180+angle_front] the back region, otherwise the side region.")
-    parser.add_argument('--t_range', type=float, nargs='*', default=[0.02, 0.98], help="stable diffusion time steps range")
-
-    ### regularizations
-    parser.add_argument('--lambda_entropy', type=float, default=1e-3, help="loss scale for alpha entropy")
-    parser.add_argument('--lambda_opacity', type=float, default=0, help="loss scale for alpha value")
-    parser.add_argument('--lambda_orient', type=float, default=1e-2, help="loss scale for orientation")
-    parser.add_argument('--lambda_tv', type=float, default=0, help="loss scale for total variation")
-    parser.add_argument('--lambda_wd', type=float, default=0, help="loss scale")
-
-    parser.add_argument('--lambda_mesh_normal', type=float, default=0.5, help="loss scale for mesh normal smoothness")
-    parser.add_argument('--lambda_mesh_laplacian', type=float, default=0.5, help="loss scale for mesh laplacian")
-
-    parser.add_argument('--lambda_guidance', type=float, default=1, help="loss scale for SDS")
-    parser.add_argument('--lambda_rgb', type=float, default=10, help="loss scale for RGB")
-    parser.add_argument('--lambda_mask', type=float, default=5, help="loss scale for mask (alpha)")
-    parser.add_argument('--lambda_normal', type=float, default=0, help="loss scale for normal map")
-    parser.add_argument('--lambda_depth', type=float, default=0.1, help="loss scale for relative depth")
-    parser.add_argument('--lambda_2d_normal_smooth', type=float, default=0, help="loss scale for 2D normal image smoothness")
-
-    ### GUI options
-    parser.add_argument('--gui', action='store_true', help="start a GUI")
-    parser.add_argument('--W', type=int, default=800, help="GUI width")
-    parser.add_argument('--H', type=int, default=800, help="GUI height")
-    parser.add_argument('--radius', type=float, default=3, help="default GUI camera radius from center")
-    parser.add_argument('--fovy', type=float, default=60, help="default GUI camera fovy")
-    parser.add_argument('--light_theta', type=float, default=60, help="default GUI light direction in [0, 180], corresponding to elevation [90, -90]")
-    parser.add_argument('--light_phi', type=float, default=0, help="default GUI light direction in [0, 360), azimuth")
-    parser.add_argument('--max_spp', type=int, default=1, help="GUI rendering max sample per pixel")
-
-    opt = parser.parse_args()
+def create_3d(
+    image,
+    workspace='workspace',
+    dmtet=True,
+    test=None,
+    save_mesh=None,
+):
+    opt = Option(image=image, workspace=workspace, dmtet=dmtet, test=test, save_mesh=save_mesh)
 
     if opt.O:
         opt.fp16 = True
