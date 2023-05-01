@@ -1,5 +1,4 @@
 import torch
-import argparse
 import sys
 
 from nerf.provider import NeRFDataset
