@@ -1,6 +1,6 @@
 import openai
 
-openai.api_key = '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'
+openai.api_key = 'token'
 
 #사용자의 prompt를 토대로 category 및 detail을 추천해주는 함수
 def recommeded(discription) :
