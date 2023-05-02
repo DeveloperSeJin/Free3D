@@ -1,14 +1,15 @@
 import os
 import cv2
-import argparse
 import numpy as np
 import matplotlib.pyplot as plt
+import sys
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import transforms
 from PIL import Image
+import argparse
 
 class BackgroundRemoval():
     def __init__(self, device='cuda'):
@@ -111,13 +112,13 @@ class DPT():
             normal = normal.cpu().numpy()
             return normal
 
-
-
-if __name__ == '__main__':
-
+def preprocess(path:str):
+    # parser.add_argument('path', type=str, help="path to image (png, jpeg, etc.)")
+    # opt = parser.parse_args()
+    
     parser = argparse.ArgumentParser()
-    parser.add_argument('path', type=str, help="path to image (png, jpeg, etc.)")
-    opt = parser.parse_args()
+    parser.add_argument(dest='path', default='', action='store')
+    opt = parser.parse_args([path])
     
     out_dir = os.path.dirname(opt.path)
     out_rgba = os.path.join(out_dir, os.path.basename(opt.path).split('.')[0] + '_rgba.png')
@@ -127,6 +128,10 @@ if __name__ == '__main__':
 
     # load image
     print(f'[INFO] loading image...')
+    
+    rgb_image = cv2.imread(out_rgba, cv2.IMREAD_UNCHANGED)
+    if rgb_image is not None: sys.exit()
+    
     image = cv2.imread(opt.path, cv2.IMREAD_UNCHANGED)
     if image.shape[-1] == 4:
         image = cv2.cvtColor(image, cv2.COLOR_BGRA2RGB)
@@ -163,8 +168,4 @@ if __name__ == '__main__':
     # blip2 = BLIP2()
     # caption = blip2(image)
     # with open(out_caption, 'w') as f:
-    #     f.write(caption)
-
-
-    
-
+    #     f.write(caption)    

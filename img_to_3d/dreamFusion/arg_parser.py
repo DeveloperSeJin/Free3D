@@ -1,29 +1,36 @@
 class ArgParser():
     def __init__(
         self,
-        image=None,
-        workspace='workspace',
-        dmtet=True,
-        test=None,
-        save_mesh=None,
+        text=None,
+        negative='',
+        O=None,
+        O2=True,
+        test=False,
         eval_interval=1,
+        workspace='workspace',
         guidance='stable-diffusion',
         seed=None,
+        image=None,
         known_view_interval=2,
         guidance_scale=100.0,
+        save_mesh=None,
         mcubes_resolution=256,
         decimate_target=5e4,
+        dmtet=True,
         tet_grid_size=128,
         init_ckpt='',
         iters=10000,
         lr=1e-3,
         ckpt='latest',
+        cuda_ray=False,
+        taichi_ray=False,
         max_steps=1024,
         num_steps=64,
         upsample_steps=32,
         update_extra_interval=16,
         max_ray_batch=4096,
         warmup_iters=2000,
+        jitter_pose=False,
         uniform_sphere_rate=0.0,
         grad_clip=-1.0,
         grad_clip_rgb=-1.0,
@@ -68,36 +75,50 @@ class ArgParser():
         lambda_normal=0.0,
         lambda_depth=0.1,
         lambda_2d_normal_smooth=0.0,
-        O=None,
-        O2=None
+        gui=None,
+        H=800,
+        W=800
     ) -> None:
-        
-        self.image = image
-        self.workspace= workspace
-        self.dmtet=dmtet
+        self.text=text
+        self.negative=negative
+        self.O=O
+        self.O2=O2
         self.test=test
-        self.save_mesh=save_mesh
         self.eval_interval=eval_interval
+        self.workspace= workspace
         self.guidance=guidance
         self.seed=seed
+        
+        self.image = image
         self.known_view_interval=known_view_interval
         self.guidance_scale=guidance_scale
+        
+        self.save_mesh=save_mesh
         self.mcubes_resolution=mcubes_resolution
         self.decimate_target=decimate_target
+        
+        self.dmtet=dmtet       
         self.tet_grid_size=tet_grid_size
         self.init_ckpt=init_ckpt
+        
+        ### training options
         self.iters=iters
         self.lr=lr
         self.ckpt=ckpt
+        self.cuda_ray=cuda_ray
+        self.taichi_ray=taichi_ray
         self.max_steps=max_steps
         self.num_steps=num_steps
         self.upsample_steps=upsample_steps
         self.update_extra_interval=update_extra_interval
         self.max_ray_batch=max_ray_batch
         self.warmup_iters=warmup_iters
+        self.jitter_pose=jitter_pose        
         self.uniform_sphere_rate=uniform_sphere_rate
         self.grad_clip=grad_clip
         self.grad_clip_rgb=grad_clip_rgb
+        
+        ### 
         self.bg_radius=bg_radius
         self.density_activation=density_activation
         self.density_thresh=density_thresh
@@ -139,5 +160,6 @@ class ArgParser():
         self.lambda_normal=lambda_normal
         self.lambda_depth=lambda_depth
         self.lambda_2d_normal_smooth=lambda_2d_normal_smooth
-        self.O=O
-        self.O2=O2
+        self.gui=gui
+        self.H=H
+        self.W=W
