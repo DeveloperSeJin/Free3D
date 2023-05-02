@@ -4,17 +4,20 @@ import sys
 from nerf.provider import NeRFDataset
 from nerf.utils import *        
 from arg_parser import ArgParser
+from preprocess_image import preprocess
+
 
 # torch.autograd.set_detect_anomaly(True)
 def create_3d(
     image,
     workspace='workspace',
     dmtet=True,
-    test=None,
-    save_mesh=None,
+    test=True,
+    save_mesh=True
 ):
     opt = ArgParser(image=image, workspace=workspace, dmtet=dmtet, test=test, save_mesh=save_mesh)
-
+    preprocess(opt.image)
+    
     if opt.O:
         opt.fp16 = True
         opt.cuda_ray = True
