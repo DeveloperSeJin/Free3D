@@ -12107,3 +12107,347 @@ substantial	B-size
 dining	B-furniture
 table	I-furniture
 .	O
+
+A	O
+Sofa	B-furniture
+
+Chair	B-furniture
+
+A	O
+Table	B-furniture
+
+The	O
+Bed	B-furniture
+
+A	O
+Desk	B-furniture
+
+Cabinet	B-furniture
+
+A	O
+Bookcase	B-furniture
+
+Wardrobe	B-furniture
+
+A	O
+Ottoman	B-furniture
+
+The	O
+Bench	B-furniture
+
+A	O
+Stool	B-furniture
+
+Coffee	B-furniture
+table	I-furniture
+
+A	O
+Dining	B-furniture
+table	I-furniture
+
+Sideboard	B-furniture
+
+A	O
+Dresser	B-furniture
+
+The	O
+Nightstand	B-furniture
+
+A	O
+TV	B-furniture
+stand	I-furniture
+
+Console	B-furniture
+table	I-furniture
+
+A	O
+Writing	B-furniture
+desk	I-furniture
+
+Computer	B-furniture
+desk	I-furniture
+
+A	O
+End	B-furniture
+table	I-furniture
+
+The	O
+Accent	B-furniture
+table	I-furniture
+
+A	O
+Vanity	B-furniture
+table	I-furniture
+
+Rocking	B-furniture
+chair	I-furniture
+
+A	O
+Recliner	B-furniture
+
+Chaise	B-furniture
+lounge	I-furniture
+
+A	O
+Futon	B-furniture
+
+The	O
+Sectional	B-furniture
+sofa	I-furniture
+
+A	O
+Loveseat	B-furniture
+
+Armchair	B-furniture
+
+A	O
+Bar	B-furniture
+stool	I-furniture
+
+Counter	B-furniture
+stool	I-furniture
+
+A	O
+Pouf	B-furniture
+
+The	O
+Storage	B-furniture
+ottoman	I-furniture
+
+A	O
+Credenza	B-furniture
+
+Buffet	B-furniture
+
+A	O
+China	B-furniture
+cabinet	I-furniture
+
+Display	B-furniture
+cabinet	I-furniture
+
+A	O
+Filing	B-furniture
+cabinet	I-furniture
+
+The	O
+Murphy	B-furniture
+bed	I-furniture
+
+A	O
+Bunk	B-furniture
+bed	I-furniture
+
+Trundle	B-furniture
+bed	I-furniture
+
+A	O
+Canopy	B-furniture
+bed	I-furniture
+
+Daybed	B-furniture
+
+A	O
+Loft	B-furniture
+bed	I-furniture
+
+The	O
+Secretary	B-furniture
+desk	I-furniture
+
+A	O
+L-shaped	B-furniture
+desk	I-furniture
+
+Floating	B-furniture
+shelf	I-furniture
+
+A	O
+Coat	B-furniture
+rack	I-furniture
+
+Shoe	B-furniture
+rack	I-furniture
+
+A	O
+Entertainment	B-furniture
+center	I-furniture
+
+The	O
+Wall	B-furniture
+unit	I-furniture
+
+A	O
+Side	B-furniture
+table	I-furniture
+
+Nesting	B-furniture
+tables	I-furniture
+
+A	O
+Plant	B-furniture
+stand	I-furniture
+
+Hallway	B-furniture
+bench	I-furniture
+
+A	O
+Accent	B-furniture
+chair	I-furniture
+
+The	O
+Wingback	B-furniture
+chair	I-furniture
+
+A	O
+Folding	B-furniture
+table	I-furniture
+
+Bar	B-furniture
+cabinet	I-furniture
+
+A	O
+Wine	B-furniture
+rack	I-furniture
+
+Medicine	B-furniture
+cabinet	I-furniture
+
+A	O
+Bathroom	B-furniture
+vanity	I-furniture
+
+The	O
+Patio	B-furniture
+furniture	I-furniture
+
+A	O
+Adirondack	B-furniture
+chair	I-furniture
+
+Hammock	B-furniture
+
+A	O
+Picnic	B-furniture
+table	I-furniture
+
+Sun	B-furniture
+lounger	I-furniture
+
+A	O
+Outdoor	B-furniture
+sofa	I-furniture
+
+The	O
+Swing	B-furniture
+chair	I-furniture
+
+A	O
+Reclining	B-furniture
+chair	I-furniture
+
+Folding	B-furniture
+chair	I-furniture
+
+A	O
+Baby	B-furniture
+crib	I-furniture
+
+Changing	B-furniture
+table	I-furniture
+
+A	O
+High	B-furniture
+chair	I-furniture
+
+The	O
+Rocking	B-furniture
+horse	I-furniture
+
+A	O
+Toy	B-furniture
+chest	I-furniture
+
+Play	B-furniture
+kitchen	I-furniture
+
+A	O
+Dollhouse	B-furniture
+
+Bean	B-furniture
+bag	I-furniture
+chair	I-furniture
+
+A	O
+Floor	B-furniture
+lamp	I-furniture
+
+The	O
+Pendant	B-furniture
+light	I-furniture
+
+A	O
+Table	B-furniture
+lamp	I-furniture
+
+Chandelier	B-furniture
+
+A	O
+Wall	B-furniture
+sconce	I-furniture
+
+Desk	B-furniture
+lamp	I-furniture
+
+A	O
+Floor	B-furniture
+mirror	I-furniture
+
+The	O
+Wall	B-furniture
+mirror	I-furniture
+
+A	O
+Dressing	B-furniture
+mirror	I-furniture
+
+Jewelry	B-furniture
+armoire	I-furniture
+
+A	O
+Room	B-furniture
+divider	I-furniture
+
+Magazine	B-furniture
+rack	I-furniture
+
+A	O
+Coat	B-furniture
+stand	I-furniture
+
+The	O
+Fireplace	B-furniture
+mantel	I-furniture
+
+A	O
+Wine	B-furniture
+bar	I-furniture
+
+Pool	B-furniture
+table	I-furniture
+
+A	O
+Ping	B-furniture
+pong	I-furniture
+table	I-furniture
+
+Dartboard	B-furniture
+
+A	O
+Card	B-furniture
+table	I-furniture
+
+The	O
+Gym	B-furniture
+equipment	I-furniture
+rack	I-furniture
