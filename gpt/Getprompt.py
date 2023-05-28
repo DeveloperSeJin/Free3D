@@ -55,10 +55,11 @@ class gpt :
     
         recommend = '1. Color\n2.Size\n3. Materia\n4. Design'
         detail = self.request(text)
-    
-        print(detail)
-        details = detail.split('\n\n')
-
+        
+        try :
+            details = detail.split('\n\n')
+        except:
+            return -1
         json_object = {
             "recommend" :recommend
         }
