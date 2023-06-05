@@ -9,18 +9,17 @@ class NER:
 
         self.recognizer = pipeline("ner", model=self.model, tokenizer=self.tokenizer)
         
-        self.tag_dic = {'LABEL_0' : 'B-design',
-         'LABEL_1' : 'O',
-         'LABEL_2' : 'B-material',
-         'LABEL_3' : 'I-furniture',
-         'LABEL_4' : 'B-color',
-         'LABEL_5' : 'B-materialO',
-         'LABEL_6' : 'I-size',
-         'LABEL_7' : 'B-size',
-         'LABEL_8' : 'I-material',
+        self.tag_dic = {'LABEL_0' : 'I-design',
+         'LABEL_1' : 'B-design',
+         'LABEL_2' : 'B-size',
+         'LABEL_3' : 'I-material',
+         'LABEL_4' : 'B-material',
+         'LABEL_5' : 'B-color',
+         'LABEL_6' : 'I-furniture',
+         'LABEL_7' : 'O',
+         'LABEL_8' : 'I-size',
          'LABEL_9' : 'I-color',
-         'LABEL_10' : 'B-furniture',
-         'LABEL_11' : 'I-design'}
+         'LABEL_10' : 'B-material'}
         
         self.unique_tag = ['B-color', 'I-color', 'B-furniture', 'I-furniture',                          'B-material', 'I-material', 'B-size', 'I-size', 'B-design', 'I-design', 'O']
     
@@ -35,7 +34,12 @@ class NER:
     def get_tag(self, sentence):
         dic = self.return_dic(sentence)
         
-        return set([d['entity'] for d in dic])
+        tag = set()
+        for d in dic :
+            #if d['score'] > 0.88:
+            tag.add(d['entity'])
+                
+        return tag
     
     def get_missing_tags(self, sentence):
         tag = self.get_tag(sentence)
