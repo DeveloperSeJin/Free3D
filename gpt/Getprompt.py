@@ -94,7 +94,7 @@ class TextProcessing_gpt(TextProcessing) :
                 response = self.request(input_text)
                 print('response: ')
                 print(response)
-                detail_list = [re for re in response.split('\n') if re[0] == '-' and re != '\n' or re[0].isdigit()]
+                detail_list = [re for re in response.split('\n') if re[0] == '-' or re[0].isdigit()]
 
                 if len(detail_list) < 3 :
                     raise Exception("format error")
@@ -102,7 +102,7 @@ class TextProcessing_gpt(TextProcessing) :
                 detail_json = {}
                 detail_json['detail0'] = {"prompt" : verifiedSentence, "detail" : "Original Prompt"}
                 for d in detail_list :
-                    detail_json['detail' + str(index)] = {"prompt" : d.split(': ')[0], "detail" : d.split(': ')[1]}
+                    detail_json['detail' + str(index)] = {"prompt" : d.split(': ')[0], "detail" : d.split(': ')[1] + '\n'}
                     index += 1
                 break
                 
@@ -173,13 +173,13 @@ class TextProcessing_T5(TextProcessing) :
                         raise Exception("format error")
                     print(r)
                     print('-'*50)
-                detail_list = [r for r in response]
+                detail_list = [re for re in response if re[0] == '-' or re[0].isdigit()]
                 
                 index = 1
                 detail_json = {}
                 detail_json['detail0'] = {"prompt" : verifiedSentence, "detail" : "Original Prompt"}
                 for d in detail_list :
-                    detail_json['detail' + str(index)] = {"prompt" : d.split(': ')[0], "detail" : d.split(': ')[1]}
+                    detail_json['detail' + str(index)] = {"prompt" : d.split(': ')[0], "detail" : d.split(': ')[1] + '\n'}
                     index += 1
                 break
             except Exception as e:
