@@ -9,19 +9,20 @@ class NER:
 
         self.recognizer = pipeline("ner", model=self.model, tokenizer=self.tokenizer)
         
-        self.tag_dic = {'LABEL_0' : 'I-design',
-         'LABEL_1' : 'B-design',
-         'LABEL_2' : 'B-size',
-         'LABEL_3' : 'I-material',
-         'LABEL_4' : 'B-material',
-         'LABEL_5' : 'B-color',
-         'LABEL_6' : 'I-furniture',
-         'LABEL_7' : 'O',
-         'LABEL_8' : 'I-size',
-         'LABEL_9' : 'I-color',
-         'LABEL_10' : 'B-material'}
+        self.tag_dic = {
+         'LABEL_0' : 'B-Size',
+         'LABEL_1' : 'B-Design',
+         'LABEL_2' : 'I-Material',
+         'LABEL_3' : 'I-Design',
+         'LABEL_4' : 'B-Color',
+         'LABEL_5' : 'I-Furniture',
+         'LABEL_6' : 'I-Color',
+         'LABEL_7' : 'I-Size',
+         'LABEL_8' : 'B-Material',
+         'LABEL_9' : 'B-Furniture',
+         'LABEL_10' : '0',}
         
-        self.unique_tag = ['B-color', 'I-color', 'B-furniture', 'I-furniture',                          'B-material', 'I-material', 'B-size', 'I-size', 'B-design', 'I-design', 'O']
+        self.unique_tag = ['B-Color', 'I-Color', 'B-Furniture', 'I-Furniture', 'B-Material', 'I-Material', 'B-Size', 'I-Size', 'B-Design', 'I-Design', 'O']
     
     def return_dic(self, sentence) :
         result_tag = self.recognizer(sentence)
@@ -43,7 +44,7 @@ class NER:
     
     def get_missing_tags(self, sentence):
         tag = self.get_tag(sentence)
-        recommend_tag = ['B-color', 'B-furniture', 'B-material', 'B-size', 'B-design']
+        recommend_tag = ['B-Color', 'B-Furniture', 'B-Material', 'B-Size', 'B-Design']
         [recommend_tag.remove(t) for t in tag if t in recommend_tag]
         
         if len(recommend_tag) > 0 :

@@ -30,13 +30,13 @@ class TextProcessing :
         
         objs = self.ner.get_missing_tags(prompt)
         
-        if 'furniture' in objs:
+        if 'Furniture' in objs:
             print('do not have furniture')
             return -1
         
-        recommend_dict = {'material': self.material_example, 'color': self.color_exmaple, 'size': self.size_exmaple, 'design': self.design_exmaple}
-        
-        recommend = ''.join('-It is recommended to represent ' + o + '\n example: ' + recommend_dict[o] + '\n\n' for o in objs)
+        recommend_dict = {'Material': self.material_example, 'Color': self.color_exmaple, 'Size': self.size_exmaple, 'Design': self.design_exmaple}
+        express = ''.join('-' + '<span style=\"color:red\"><b>' + o + '</b></span>: ' + recommend_dict[o] + '\n\n' for o in objs)
+        recommend = 'How about adding these properties?\n\n'+  express
         print('recommend')
         print(recommend)
         
@@ -72,8 +72,7 @@ class TextProcessing_gpt(TextProcessing) :
         
         recommend = super().checkPrompt(prompt)
         
-        if recommend.isdigit() :
-            print('do not have furniture')
+        if recommend == -1 or recommend == 0:
             return recommend
         
         json_object = {
@@ -147,7 +146,7 @@ class TextProcessing_T5(TextProcessing) :
         
         recommend = super().checkPrompt(prompt)
         
-        if recommend.isdigit() :
+        if recommend == -1 or recommend == 0:
             return recommend
         
         json_object = {
