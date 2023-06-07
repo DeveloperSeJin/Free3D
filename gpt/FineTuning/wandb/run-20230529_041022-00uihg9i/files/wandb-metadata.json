@@ -1,0 +1,54 @@
+{
+    "os": "Linux-5.15.90.1-microsoft-standard-WSL2-x86_64-with-glibc2.10",
+    "python": "3.8.0",
+    "heartbeatAt": "2023-05-28T19:10:28.606136",
+    "startedAt": "2023-05-28T19:10:22.859857",
+    "docker": null,
+    "cuda": null,
+    "args": null,
+    "state": "running",
+    "program": "Free3D/gpt/FineTuning/Fine_Tuning_NER_Model.ipynb",
+    "root": "/mnt/d/home/Free3D",
+    "git": {
+        "remote": "https://github.com/DeveloperSeJin/Free3D.git",
+        "commit": "96635620cb6e2bb7b535ea301c3ab89a2df283d9"
+    },
+    "email": "sejinp98@gmail.com",
+    "host": "DESKTOP-1IF0K91",
+    "username": "sejin",
+    "executable": "/home/sejin/anaconda3/envs/gpt/bin/python",
+    "cpu_count": 1,
+    "cpu_count_logical": 2,
+    "cpu_freq": {
+        "current": 3600.0,
+        "min": 0.0,
+        "max": 0.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3600.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3600.0,
+            "min": 0.0,
+            "max": 0.0
+        }
+    ],
+    "disk": {
+        "total": 1006.853931427002,
+        "used": 182.00627899169922
+    },
+    "gpu": "NVIDIA GeForce RTX 3060",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 3060",
+            "memory_total": 12884901888
+        }
+    ],
+    "memory": {
+        "total": 58.86440658569336
+    }
+}
