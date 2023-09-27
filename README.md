@@ -16,6 +16,7 @@ text-to-2D에선 stable diffusion을 사용하였고, 2D-to-3D에선 shape-e를 
 <img width="80%" src="https://github.com/DeveloperSeJin/Free3D/assets/114290488/58a7e87e-a75f-4ca9-b712-0776eb6c5835">
 
 ## Recommended-specifications
-vram >= 16G
-
++ GPU
+at least 12G of vram(GPU Memory)
+recommended 16G of vram(GPU Memory)
 ## Usage
