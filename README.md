@@ -17,6 +17,5 @@ text-to-2D에선 stable diffusion을 사용하였고, 2D-to-3D에선 shape-e를 
 
 ## Recommended-specifications
 + GPU  
-at least 12G of vram(GPU Memory)  
-recommended 16G of vram(GPU Memory)
+at least 16G of vram(GPU Memory)
 ## Usage
