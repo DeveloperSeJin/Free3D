@@ -18,6 +18,6 @@ text-to-2D에선 stable diffusion을 사용하였고, 2D-to-3D에선 shape-e를 
 ## Recommended-specifications
 + GPU  
 at least 16G of vram(GPU Memory)
-+ Python 3
-We tested all process(text processing, image generation, 3d reconstruction) on python 3.9. So we do not guarantee other python version but it may also be working on other python version.
++ Python 3  
+We tested all process(text processing, image generation, 3d reconstruction) on **Python 3.9**. So we do not guarantee other python version but it may also be working on other python version.
 ## Usage
