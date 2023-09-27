@@ -1,4 +1,8 @@
 # Free3D
+
+## Table of Contents
+[Samples](## Samples)
+
 기존 text to 3D 인공지능 모델은 input prompt를 고정하여 사용하였다.
 본 프로젝트에서는 chatbot을 사용하여 input prompt를 보안하고 input의 부족한 부분을 찾아낸다.
 
