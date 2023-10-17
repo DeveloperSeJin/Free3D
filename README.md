@@ -13,7 +13,7 @@ text-to-2D에선 stable diffusion을 사용하였고, 2D-to-3D에선 shape-e를 
 3. [Usage](#Usage)
 
 # Samples
-<img width="100%" src="https://github.com/DeveloperSeJin/Free3D/assets/74523540/4fccea5f-cb6d-4143-9ef7-1a5add7e897f">
+<img width="100%" src="https://github.com/DeveloperSeJin/Free3D/assets/74523540/a96da5ea-e895-465f-ab0e-e2db337753b2">
 
 # Recommended-specifications  
 + **Ubuntu 18.04 with python 3.9 & torch 2.0.1 + CUDA 11.7 on a RTX 2080Ti and NVIDIA T4**
